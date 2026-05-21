@@ -108,13 +108,53 @@
 
 ## Traceability
 
-| REQ-ID | Phase |
-|--------|-------|
-| KIOSK-01 to KIOSK-07 | TBD — roadmap |
-| VOICE-01 to VOICE-08 | TBD — roadmap |
-| MASCOT-01 to MASCOT-10 | TBD — roadmap |
-| SESSION-01 to SESSION-06 | TBD — roadmap |
-| LANG-01 to LANG-03 | TBD — roadmap |
-| BACKEND-01 to BACKEND-07 | TBD — roadmap |
-| SAFETY-01 to SAFETY-03 | TBD — roadmap |
-| TEST-01 to TEST-04 | TBD — roadmap |
+| REQ-ID | Phase | Status |
+|--------|-------|--------|
+| KIOSK-01 | Phase 1 | Pending |
+| KIOSK-02 | Phase 2 | Pending |
+| KIOSK-03 | Phase 2 | Pending |
+| KIOSK-04 | Phase 1 | Pending |
+| KIOSK-05 | Phase 2 | Pending |
+| KIOSK-06 | Phase 1 | Pending |
+| KIOSK-07 | Phase 3 | Pending |
+| VOICE-01 | Phase 1 | Pending |
+| VOICE-02 | Phase 1 | Pending |
+| VOICE-03 | Phase 1 | Pending |
+| VOICE-04 | Phase 1 | Pending |
+| VOICE-05 | Phase 1 | Pending |
+| VOICE-06 | Phase 1 | Pending |
+| VOICE-07 | Phase 1 | Pending |
+| VOICE-08 | Phase 1 | Pending |
+| MASCOT-01 | Phase 2 | Pending |
+| MASCOT-02 | Phase 2 | Pending |
+| MASCOT-03 | Phase 2 | Pending |
+| MASCOT-04 | Phase 2 | Pending |
+| MASCOT-05 | Phase 2 | Pending |
+| MASCOT-06 | Phase 2 | Pending |
+| MASCOT-07 | Phase 2 | Pending |
+| MASCOT-08 | Phase 2 | Pending |
+| MASCOT-09 | Phase 2 | Pending |
+| MASCOT-10 | Phase 2 | Pending |
+| SESSION-01 | Phase 1 | Pending |
+| SESSION-02 | Phase 2 | Pending |
+| SESSION-03 | Phase 3 | Pending |
+| SESSION-04 | Phase 2 | Pending |
+| SESSION-05 | Phase 1 | Pending |
+| SESSION-06 | Phase 1 | Pending |
+| LANG-01 | Phase 3 | Pending |
+| LANG-02 | Phase 3 | Pending |
+| LANG-03 | Phase 3 | Pending |
+| BACKEND-01 | Phase 1 | Pending |
+| BACKEND-02 | Phase 1 | Pending |
+| BACKEND-03 | Phase 1 | Pending |
+| BACKEND-04 | Phase 1 | Pending |
+| BACKEND-05 | Phase 1 | Pending |
+| BACKEND-06 | Phase 1 | Pending |
+| BACKEND-07 | Phase 1 | Pending |
+| SAFETY-01 | Phase 1 | Pending |
+| SAFETY-02 | Phase 1 | Pending |
+| SAFETY-03 | Phase 1 | Pending |
+| TEST-01 | Phase 4 | Pending |
+| TEST-02 | Phase 4 | Pending |
+| TEST-03 | Phase 4 | Pending |
+| TEST-04 | Phase 4 | Pending |
