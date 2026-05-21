@@ -1,0 +1,9 @@
+tmp/
+
+# dependencies
+node_modules/
+.venv/
+
+.env
+
+*.log
