@@ -60,15 +60,22 @@ Decimal phases appear between their surrounding integers in numeric order.
 **UI hint:** yes
 
 ### Phase 4: Tests & Production-Readiness
-**Goal:** Automated tests cover frontend state machine logic, browser flows, and backend endpoints so the kiosk can be verified without manual inspection or live OpenAI calls
+**Goal:** Automated tests cover frontend state machine logic, browser flows, and backend endpoints; Playwright MCP and Chrome DevTools MCP used for live browser inspection, console log review, and visual QA
 **Mode:** mvp
 **Depends on:** Phase 3
 **Requirements:** TEST-01, TEST-02, TEST-03, TEST-04
+**Testing tools:**
+  - Vitest (frontend unit/component tests — CLI)
+  - Playwright (E2E browser tests — CLI)
+  - pytest (backend tests — CLI)
+  - Playwright MCP (live browser interaction, screenshot capture, network inspection during development)
+  - Chrome DevTools MCP (browser console log inspection, JS error detection, performance profiling)
 **Success Criteria** (what must be TRUE):
   1. Vitest unit tests cover state machine transitions, keyboard handling, stale keyup guard, idle timer, and language text selection — and all pass with `npm test`
   2. Playwright E2E tests cover app load, idle state render, Space keydown/keyup flow, admin reset, and error message display — and all pass with `npx playwright test`
   3. pytest tests cover `/health`, `/metrics`, session creation, reset endpoint, and secret-not-in-response checks — and all pass with `uv run pytest`
   4. Normal test runs complete without any live OpenAI API calls; real OpenAI smoke tests only run when `RUN_OPENAI_SMOKE_TESTS=true` is explicitly set
+  5. Chrome DevTools MCP confirms zero unexpected JS errors in the browser console during the core visitor flow (idle → listening → thinking → speaking → returning → idle)
 **Plans:** TBD
 
 ## Progress
