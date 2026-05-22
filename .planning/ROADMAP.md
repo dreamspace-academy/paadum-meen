@@ -30,7 +30,13 @@ Decimal phases appear between their surrounding integers in numeric order.
   3. The kiosk UI renders in portrait 9:16 and shows the "Hold Space to talk" instruction in the center of the screen
   4. Backend `/health` and `/metrics` endpoints return valid responses and `/api/session/reset` accepts a POST without crashing
   5. When the WebRTC connection fails during an active interaction, the app enters error state and shows "Something went wrong. Please try again." instead of crashing
-**Plans:** TBD
+**Plans:** 4 plans
+
+Plans:
+- [ ] 01-01-PLAN.md — Walking skeleton: scaffold backend + frontend + one working voice round-trip
+- [ ] 01-02-PLAN.md — Backend complete: /health, /metrics, /api/session/reset, TOML config, system prompt, Prometheus metrics
+- [ ] 01-03-PLAN.md — Kiosk shell: KioskFrame, HoldToTalkInstruction, ListeningVisualizer, ErrorMessage, state machine, backend client
+- [ ] 01-04-PLAN.md — Session lifecycle: keep-warm, reconnect, idle timeout, stale keyup guard, error recovery
 **UI hint:** yes
 
 ### Phase 2: Animated Kiosk
@@ -85,7 +91,7 @@ Phases execute in numeric order: 1 → 2 → 3 → 4
 
 | Phase | Plans Complete | Status | Completed |
 |-------|----------------|--------|-----------|
-| 1. Working Voice | 0/TBD | Not started | - |
+| 1. Working Voice | 0/4 | Not started | - |
 | 2. Animated Kiosk | 0/TBD | Not started | - |
 | 3. Language & Admin Polish | 0/TBD | Not started | - |
 | 4. Tests & Production-Readiness | 0/TBD | Not started | - |
