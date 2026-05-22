@@ -4,8 +4,7 @@ import {
   resetSession as apiResetSession,
 } from '../lib/api'
 
-const REALTIME_API_URL =
-  'https://api.openai.com/v1/realtime?model=gpt-realtime-mini-2025-12-15'
+const REALTIME_BASE_URL = 'https://api.openai.com/v1/realtime'
 
 type StateChangeEvent = 'speaking_started' | 'speaking_done' | 'error'
 
@@ -159,6 +158,7 @@ export function useWebRTC(
       // 1. Fetch ephemeral client secret from backend
       const session = await fetchRealtimeSession()
       const clientSecret = session.client_secret.value
+      const realtimeUrl = `${REALTIME_BASE_URL}?model=${session.model}`
 
       // 2. Get mic access
       const stream = await navigator.mediaDevices.getUserMedia({
@@ -201,7 +201,7 @@ export function useWebRTC(
       await pc.setLocalDescription(offer)
 
       // 8. Exchange SDP with OpenAI Realtime API
-      const sdpResponse = await fetch(REALTIME_API_URL, {
+      const sdpResponse = await fetch(realtimeUrl, {
         method: 'POST',
         headers: {
           Authorization: `Bearer ${clientSecret}`,

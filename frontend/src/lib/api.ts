@@ -22,7 +22,7 @@ async function handleResponse<T>(res: Response): Promise<T> {
  * Returns session credentials including the ephemeral client secret.
  */
 export async function fetchRealtimeSession(): Promise<RealtimeSessionResponse> {
-  const res = await fetch('/api/session', {
+  const res = await fetch('/api/realtime/session', {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
   })
