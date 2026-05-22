@@ -1,4 +1,4 @@
-model = "gpt-realtime-mini"
+model = "gpt-realtime-2025-08-28"
 voice = "shimmer"
 system_prompt_path = "prompts/system.md"
 idle_timeout_seconds = 30

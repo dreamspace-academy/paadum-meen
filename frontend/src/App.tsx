@@ -12,7 +12,7 @@ import Background from './components/Background'
 import Mascot from './components/Mascot'
 import AudioVisualizer from './components/AudioVisualizer'
 import SuggestedBubbles from './components/SuggestedBubbles'
-// import Subtitles from './components/Subtitles'
+import Subtitles from './components/Subtitles'
 import LanguageSelector from './components/LanguageSelector'
 import ResetButton from './components/ResetButton'
 import HoldPrompt from './components/HoldPrompt'
@@ -28,6 +28,7 @@ function App() {
   const {
     isConnecting,
     micStream,
+    aiTranscript,
     setMicEnabled,
     connect,
     disconnect,
@@ -131,11 +132,11 @@ function App() {
         getFrequencyData={getFrequencyData}
       />
 
-      {/* Subtitles — show during THINKING and SPEAKING
+      {/* Subtitles — show during THINKING and SPEAKING */}
       <Subtitles
         text={state === AppState.THINKING ? UI_STRINGS[lang].thinking : aiTranscript}
         visible={state === AppState.THINKING || state === AppState.SPEAKING}
-      /> */}
+      />
 
       {/* Error message */}
       {state === AppState.ERROR && (
