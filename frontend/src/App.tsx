@@ -117,7 +117,7 @@ function App() {
       </div>
 
       {/* Suggested questions — only in IDLE */}
-      <SuggestedBubbles visible={state === AppState.IDLE} />
+      <SuggestedBubbles visible={state === AppState.IDLE} lang={lang} />
 
       {/* Hold prompt — visible in IDLE and RETURNING */}
       <HoldPrompt

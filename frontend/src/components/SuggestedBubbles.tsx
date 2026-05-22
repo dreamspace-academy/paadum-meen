@@ -1,7 +1,9 @@
-import { SUGGESTED_QUESTIONS } from '../lib/constants'
+import { SUGGESTED_QUESTIONS_BY_LANG } from '../lib/constants'
+import type { Language } from '../lib/constants'
 
 interface SuggestedBubblesProps {
   visible: boolean
+  lang: Language
 }
 
 const POSITIONS: React.CSSProperties[] = [
@@ -20,7 +22,7 @@ const CHIP_ANIMATIONS = [
   { duration: '3.0s', delay: '0.9s' },
 ]
 
-export default function SuggestedBubbles({ visible }: SuggestedBubblesProps) {
+export default function SuggestedBubbles({ visible, lang }: SuggestedBubblesProps) {
   return (
     <div
       style={{
@@ -31,7 +33,7 @@ export default function SuggestedBubbles({ visible }: SuggestedBubblesProps) {
         transition: 'opacity 0.5s ease',
       }}
     >
-      {SUGGESTED_QUESTIONS.slice(0, 5).map((question, i) => (
+      {SUGGESTED_QUESTIONS_BY_LANG[lang].slice(0, 5).map((question, i) => (
         <div
           key={question}
           style={{

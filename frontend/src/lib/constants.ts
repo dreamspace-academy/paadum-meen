@@ -13,15 +13,31 @@ export const AppState = {
 
 export type AppState = (typeof AppState)[keyof typeof AppState]
 
-export const SUGGESTED_QUESTIONS = [
-  'What is MakerSpace?',
-  'Tell me about DreamSpace.',
-  'Who are you, Paadum Meen?',
-  'What can I build here?',
-  'What are the library opening hours?',
-] as const
-
 export type Language = 'en' | 'ta' | 'si'
+
+export const SUGGESTED_QUESTIONS_BY_LANG: Record<Language, readonly string[]> = {
+  en: [
+    'What is MakerSpace?',
+    'Tell me about DreamSpace.',
+    'Who are you, Paadum Meen?',
+    'What can I build here?',
+    'What are the library opening hours?',
+  ],
+  ta: [
+    'மேக்கர்ஸ்பேஸ் என்றால் என்ன?',
+    'டிரீம்ஸ்பேஸ் பற்றி சொல்லுங்கள்.',
+    'நீ யார், பாடும் மீன்?',
+    'இங்கே என்ன உருவாக்கலாம்?',
+    'நூலகம் திறக்கும் நேரம் என்ன?',
+  ],
+  si: [
+    'MakerSpace කියන්නේ මොකක්ද?',
+    'DreamSpace ගැන කියන්න.',
+    'ඔයා කවුද, Paadum Meen?',
+    'මෙහිදී මොනවා හදන්න පුළුවන්ද?',
+    'පුස්තකාලය විවෘත වන වේලාවන් මොනවාද?',
+  ],
+}
 
 export const UI_STRINGS: Record<
   Language,
