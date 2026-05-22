@@ -2,11 +2,11 @@
 
 ## 1\. Product Summary
 
-**Paadum Meen** is a browser-based, portrait-mode interactive kiosk experience built around an animated Batticaloa singing fish mascot.
+**Paadum Meen** is a browser-based, portrait-mode interactive kiosk experience built around an animated Batticaloa mermaid mascot.
 
 The kiosk is primarily for **MakerSpace by DreamSpace** and the wider **DreamSpace ecosystem**. It helps children, library visitors, and community members learn about MakerSpace, DreamSpace Academy, DreamSpace initiatives, Batticaloa, and the Batticaloa Public Library through natural speech interaction.
 
-The visitor talks to the fish by holding the **Space** key. The fish listens, thinks, and responds with voice using a direct speech-to-speech AI model.
+The visitor talks to the mermaid by holding the **Space** key. The mermaid listens, thinks, and responds with voice using a direct speech-to-speech AI model.
 
 The MVP should feel presentable, alive, locally rooted, and simple enough to build quickly.
 
@@ -16,7 +16,7 @@ The MVP should feel presentable, alive, locally rooted, and simple enough to bui
 
 The MVP should demonstrate:
 
-1. A visually appealing animated fish mascot.  
+1. A visually appealing animated mermaid mascot.
 2. Voice-only visitor interaction.  
 3. Direct speech-to-speech AI conversation.  
 4. A topic-limited public-kiosk experience.  
@@ -93,11 +93,11 @@ The reset button is visible in the app but intended only for the admin/facilitat
 
 ## 6\. Conversation Scope
 
-The fish should mainly talk about DreamSpace and MakerSpace topics.
+The mermaid should mainly talk about DreamSpace and MakerSpace topics.
 
 ### 6.1 Primary Topics
 
-The fish should prioritize:
+The mermaid should prioritize:
 
 1. MakerSpace by DreamSpace  
 2. DreamSpace Academy  
@@ -106,7 +106,7 @@ The fish should prioritize:
 
 ### 6.2 Secondary Topics
 
-The fish may also answer questions about:
+The mermaid may also answer questions about:
 
 1. Batticaloa  
 2. Batticaloa Public Library  
@@ -115,9 +115,9 @@ The fish may also answer questions about:
 
 ### 6.3 Out-of-Scope Questions
 
-The fish should not behave like a general-purpose AI assistant.
+The mermaid should not behave like a general-purpose AI assistant.
 
-If users ask unrelated questions, the fish should politely guide them back to MakerSpace, DreamSpace, Batticaloa, or the Public Library.
+If users ask unrelated questions, the mermaid should politely guide them back to MakerSpace, DreamSpace, Batticaloa, or the Public Library.
 
 Example fallback behavior:
 
@@ -139,7 +139,7 @@ Expected behavior:
 2. App sends speech/audio to AI model.  
 3. AI model responds with streamed voice output.  
 4. App plays the AI voice response through the speaker.  
-5. Fish speaking animation plays during the response.  
+5. Mermaid speaking animation plays during the response.
 6. If the AI model provides subtitles/transcript, the app displays them.
 
 ### 7.2 System Prompt
@@ -179,7 +179,7 @@ The session should not be treated as long-term memory.
 
 After the AI finishes speaking, if there is no new visitor speech for **30 seconds**, the app should:
 
-1. Return the fish to idle/resting state.  
+1. Return the mermaid to idle/resting state.
 2. Clear the conversation context.  
 3. Keep the system prompt active.  
 4. Clear visible subtitles/transcript if shown.  
@@ -195,7 +195,7 @@ When the admin clicks **Reset Session**, the app should:
 2. Stop any active AI response if possible.  
 3. Clear the active conversation context.  
 4. Keep the system prompt active.  
-5. Return the fish to idle state.  
+5. Return the mermaid to idle state.
 6. Clear visible subtitles/transcript if shown.  
 7. Resume floating suggested-question bubbles.
 
@@ -226,19 +226,23 @@ The background should be calm, magical, and locally recognizable.
 
 ### 9.3 Mascot
 
-The mascot is the **singing fish of Batticaloa**.
+The mascot is a **Batticaloa mermaid named Paadum Meen**.
 
-The fish should be a 2D layered animated character, not a full 3D model.
+The mermaid should be a 2D layered animated character, not a full 3D model.
 
-The fish should support programmatic movement through layered parts such as:
+The mermaid should support programmatic movement through layered parts such as:
 
 * Body  
 * Tail  
-* Fins  
-* Eyes  
-* Mouth  
+* Hair
+* Eyes and mouth
+* Top
 * Shadow  
 * Music notes
+
+The full mascot reference is `tmp/assets/mascot.svg`. The layer assets used to construct and animate the mascot are in `tmp/assets/mascot-parts/`.
+
+The mascot was put together in Figma. The exact Figma source can be opened through the installed Figma MCP with `{"team": "Govarthenan Rajadurai's team", "project": "study", "design_file": "mermaid"}`.
 
 The mascot should feel alive through simple animations:
 
@@ -251,9 +255,9 @@ The mascot should feel alive through simple animations:
 
 ### 9.4 Music Notes
 
-Music symbols should fade in and float upward from the fish’s mouth, especially during idle and speaking states.
+Music symbols should fade in and float upward from the mermaid’s mouth, especially during idle and speaking states.
 
-They should support the “singing fish” identity without making the screen noisy.
+They should support the musical Paadum Meen identity without making the screen noisy.
 
 ---
 
@@ -310,9 +314,9 @@ Default resting state.
 
 Behavior:
 
-* Fish rests slightly in the background.  
-* Fish gently bobs in the water.  
-* Tail and fins move subtly.  
+* Mermaid rests slightly in the background.
+* Mermaid gently bobs in the water.
+* Tail and hair move subtly.
 * Background water, bubbles, moon, and stars animate gently.  
 * Suggested question bubbles float on screen.  
 * Instruction tells user to hold Space and speak.
@@ -323,8 +327,8 @@ Triggered while the visitor holds Space.
 
 Behavior:
 
-* Fish reacts to the user.  
-* Fish comes slightly forward or becomes visually attentive.  
+* Mermaid reacts to the user.
+* Mermaid comes slightly forward or becomes visually attentive.
 * Smooth audio visualizer appears.  
 * Suggested question bubbles fade or dim.  
 * Screen clearly shows that the app is listening.
@@ -335,10 +339,10 @@ Triggered after the visitor releases Space and before the AI response starts.
 
 Behavior:
 
-* Fish moves to the front.  
+* Mermaid moves to the front.
 * Thinking animation starts.  
 * Small bubbles, dots, or subtle music-note animation may appear.  
-* Screen shows that the fish is preparing a response.
+* Screen shows that the mermaid is preparing a response.
 
 ### 12.4 Speaking State
 
@@ -346,10 +350,10 @@ Triggered when the AI audio response starts streaming.
 
 Behavior:
 
-* Fish mouth animates while audio plays.  
+* Mermaid mouth animates while audio plays.
 * Mouth movement should loosely follow output audio amplitude if possible.  
-* Music notes float from the fish’s mouth.  
-* Fish body may bob gently with the rhythm of speaking.  
+* Music notes float from the mermaid’s mouth.
+* Mermaid body may bob gently with the rhythm of speaking.
 * Subtitles appear if available.
 
 ### 12.5 Returning State
@@ -358,8 +362,8 @@ Triggered after the AI finishes speaking.
 
 Behavior:
 
-* Fish remains attentive briefly.  
-* If no new speech occurs within 30 seconds, fish swims back to idle/resting position.  
+* Mermaid remains attentive briefly.
+* If no new speech occurs within 30 seconds, mermaid returns to idle/resting position.
 * Session context is cleared.  
 * Suggested question bubbles return.
 
@@ -369,7 +373,7 @@ Triggered if microphone, audio, model connection, or response generation fails.
 
 Behavior:
 
-* Fish shows a simple error/recovery animation.  
+* Mermaid shows a simple error/recovery animation.
 * App gives a short, non-technical message.  
 * App should return to idle or allow admin reset.
 
@@ -447,12 +451,12 @@ The MVP should avoid always-listening behavior.
 The MVP includes:
 
 1. Portrait 9:16 kiosk UI.  
-2. Animated 2D Batticaloa singing fish mascot.  
+2. Animated 2D Batticaloa mermaid mascot.
 3. Moonlit Batticaloa river background with Kallady Bridge.  
 4. Floating suggested-question bubbles.  
 5. Hold-Space-to-talk interaction.  
 6. Direct speech-to-speech AI conversation.  
-7. Fish listening/thinking/speaking/idle animations.  
+7. Mermaid listening/thinking/speaking/idle animations.
 8. Listening audio visualizer.  
 9. Voice response playback.  
 10. Optional subtitles if available from the AI model.  
@@ -493,7 +497,7 @@ The MVP is considered done, if:
 
 1. A visitor can understand how to interact without training.  
 2. Holding Space clearly activates listening.  
-3. The fish visibly reacts to listening, thinking, and speaking.  
+3. The mermaid visibly reacts to listening, thinking, and speaking.
 4. The AI responds by voice with low perceived latency.  
 5. The experience feels connected to DreamSpace, MakerSpace, and Batticaloa.  
 6. The app avoids general-purpose chatbot behavior.  
@@ -505,4 +509,4 @@ The MVP is considered done, if:
 
 ## 20\. One-Line MVP Definition
 
-**Paadum Meen is a DreamSpace-first, voice-only kiosk experience where visitors hold Space to speak with an animated Batticaloa singing fish that explains MakerSpace, DreamSpace, Batticaloa, and the Public Library through short AI-powered voice conversations.**  
+**Paadum Meen is a DreamSpace-first, voice-only kiosk experience where visitors hold Space to speak with an animated Batticaloa mermaid that explains MakerSpace, DreamSpace, Batticaloa, and the Public Library through short AI-powered voice conversations.**

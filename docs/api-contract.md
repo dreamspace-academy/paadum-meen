@@ -8,7 +8,7 @@
 
 This document defines the API contract for the Paadum Meen MVP.
 
-The MVP is a browser-based portrait kiosk experience where a visitor holds the **Space** key to speak with an animated Batticaloa singing fish mascot. The app uses a direct speech-to-speech AI model and avoids a separate speech-to-text → text-generation → text-to-speech pipeline.
+The MVP is a browser-based portrait kiosk experience where a visitor holds the **Space** key to speak with an animated Batticaloa mermaid mascot. The app uses a direct speech-to-speech AI model and avoids a separate speech-to-text → text-generation → text-to-speech pipeline.
 
 This contract covers:
 
@@ -106,7 +106,7 @@ OpenAI Realtime API
   -> streams voice response/audio events back to browser
 React frontend
   -> plays audio
-  -> animates fish state
+  -> animates mascot state
   -> displays subtitles if provided
 ```
 
@@ -328,7 +328,7 @@ Local reset means:
 * close/disconnect current WebRTC session if active  
 * clear visible subtitles/transcript  
 * clear local conversation/session state  
-* return fish to `idle`  
+* return mermaid to `idle`
 * resume suggested-question bubbles  
 * create a fresh realtime session before the next interaction
 
@@ -499,7 +499,7 @@ Exact cost may not always be available in realtime from the browser. The app sho
 
 The frontend owns visual state.
 
-The backend should not tell the fish how to animate.
+The backend should not tell the mermaid how to animate.
 
 ### 11.1 States
 
@@ -578,7 +578,7 @@ The app should not redefine OpenAI's full event model. It only needs to handle t
 
 | Event | Frontend behavior |
 | :---- | :---- |
-| `response.audio.delta` | AI audio is arriving. Enter/keep `speaking`; play audio; animate fish mouth. |
+| `response.audio.delta` | AI audio is arriving. Enter/keep `speaking`; play audio; animate mermaid mouth. |
 | `response.audio.done` | AI audio stream finished. Keep waiting for full response completion if needed. |
 | `response.audio_transcript.delta` | Append subtitle text if subtitles are enabled and text is reliable. |
 | `response.audio_transcript.done` | Finalize current subtitle text if available. |
@@ -670,7 +670,7 @@ Frontend must:
 * clear active timers  
 * clear local conversation/session state  
 * ignore stale keyup events  
-* return fish to `idle`  
+* return mermaid to `idle`
 * resume suggested-question bubbles  
 * call backend reset endpoint with reason `manual_admin`
 
@@ -960,7 +960,7 @@ The frontend:
 * owns local reset behavior  
 * connects to OpenAI Realtime over WebRTC  
 * plays AI audio  
-* animates the fish  
+* animates the mermaid
 * shows subtitles only if available
 
 This avoids building a custom audio backend and keeps the MVP small, fast, and aligned with direct speech-to-speech interaction.
@@ -973,4 +973,3 @@ This avoids building a custom audio backend and keeps the MVP small, fast, and a
 * OpenAI Voice Agents guide: `https://developers.openai.com/api/docs/guides/voice-agents`  
 * OpenAI Realtime WebRTC guide: `https://developers.openai.com/api/docs/guides/realtime-webrtc`  
 * OpenAI Realtime cost guide: `https://developers.openai.com/api/docs/guides/realtime-costs`
-

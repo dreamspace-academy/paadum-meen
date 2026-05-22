@@ -10,7 +10,7 @@ This document defines the system architecture for the Paadum Meen MVP.
 
 It translates the MVP product requirements and API contract into an implementation blueprint for a coding agent.
 
-The goal is to build a simple, presentable, local-first kiosk app where visitors hold the **Space** key to speak with an animated Batticaloa singing fish mascot. The app uses a direct speech-to-speech AI model through OpenAI Realtime over WebRTC.
+The goal is to build a simple, presentable, local-first kiosk app where visitors hold the **Space** key to speak with an animated Batticaloa mermaid mascot. The app uses a direct speech-to-speech AI model through OpenAI Realtime over WebRTC.
 
 This document should guide:
 
@@ -35,7 +35,7 @@ Paadum Meen MVP uses a **frontend-heavy, thin-backend architecture**.
 The frontend owns the kiosk experience:
 
 * visual UI  
-* fish animation  
+* mermaid animation
 * keyboard interaction  
 * microphone lifecycle  
 * WebRTC connection lifecycle  
@@ -107,7 +107,8 @@ OpenAI Realtime
 -> streams voice response/audio events
 
 React frontend
--> plays audio and animates fish```
+-> plays audio and animates the mermaid
+```
 
 ### 3.3 RTC lifecycle decision
 
@@ -257,7 +258,7 @@ Responsibilities:
 
 * render portrait 9:16 kiosk UI  
 * render Batticaloa river background  
-* render animated singing fish mascot  
+* render animated Batticaloa mermaid mascot
 * render floating suggested-question bubbles  
 * render language selector  
 * render admin reset button  
@@ -268,7 +269,7 @@ Responsibilities:
 * send user audio to OpenAI Realtime only while Space is held  
 * receive OpenAI realtime events  
 * play streamed AI audio  
-* drive fish state and animations  
+* drive mascot state and animations
 * show subtitles if available  
 * handle idle timeout  
 * perform local reset  
@@ -327,7 +328,7 @@ frontend/
       main.tsx
     components/
       KioskFrame.tsx
-      FishMascot.tsx
+      MermaidMascot.tsx
       BackgroundScene.tsx
       SuggestedBubbles.tsx
       HoldToTalkInstruction.tsx
@@ -350,7 +351,7 @@ frontend/
       audioAmplitude.ts
       visualizer.ts
     animation/
-      fishAnimation.ts
+      mascotAnimation.ts
       animationTypes.ts
     i18n/
       translations.ts
@@ -531,7 +532,7 @@ The frontend must continue working if transcript/subtitle events never arrive.
 
 Voice response is mandatory.
 
-Fish mouth animation should follow output audio amplitude where possible.
+Mermaid mouth animation should follow output audio amplitude where possible.
 
 Fallback behavior:
 
@@ -898,7 +899,7 @@ The system prompt should define:
 8. Frontend enters thinking state.
 9. First AI audio event arrives.
 10. Frontend enters speaking state.
-11. Frontend plays audio and animates fish mouth.
+11. Frontend plays audio and animates mermaid mouth.
 12. Response completes.
 13. Frontend enters returning state.
 14. Frontend starts 30-second idle timer.
@@ -942,7 +943,7 @@ The system prompt should define:
 8. Frontend ignores stale Space keyup events.
 9. Frontend calls POST /api/session/reset with reason=manual_admin.
 10. Frontend creates fresh realtime session.
-11. Frontend returns fish to idle.
+11. Frontend returns mermaid to idle.
 12. Suggested bubbles resume.
 ```
 
@@ -1157,36 +1158,40 @@ Avoid full 3D.
 
 Avoid complex game-engine architecture for MVP.
 
-### 15.2 Fish layers
+### 15.2 Mermaid layers
 
-The fish should support separately animated layers:
+The mermaid should support separately animated layers:
 
 ```
 body
 tail
-fins
-eyes
-mouth
+hair
+eyes-mouth
+top
 shadow
 music notes
 ```
+
+The full mascot reference is `tmp/assets/mascot.svg`. The separate PNG parts used to construct the mascot are in `tmp/assets/mascot-parts/`: `body.png`, `tail.png`, `hair.png`, `eyes-mouth.png`, and `top.png`.
+
+The mascot was assembled in Figma. The exact source file can be opened through the installed Figma MCP with `{"team": "Govarthenan Rajadurai's team", "project": "study", "design_file": "mermaid"}`.
 
 ### 15.3 State-driven animation mapping
 
 ```
 idle:
   gentle bobbing
-  subtle tail/fin movement
+  subtle tail/hair movement
   bubbles and music notes
   suggested bubbles visible
 
 listening:
-  fish attentive / slightly forward
+  mermaid attentive / slightly forward
   visualizer visible
   suggested bubbles dim
 
 thinking:
-  fish forward
+  mermaid forward
   small bubbles/dots/music-note thinking animation
 
 speaking:
@@ -1196,7 +1201,7 @@ speaking:
   subtitles visible if available
 
 returning:
-  fish remains attentive briefly
+  mermaid remains attentive briefly
   waits for idle timeout or new speech
 
 error:
@@ -1308,7 +1313,7 @@ Use Vitest for fast tests covering:
 Use Playwright for browser-level tests covering:
 
 * app loads in portrait kiosk layout
-* idle state renders fish, background, instruction, and suggested bubbles
+* idle state renders mermaid, background, instruction, and suggested bubbles
 * Space keydown enters listening state
 * Space keyup enters thinking state
 * repeated Space keydown does not break state
@@ -1363,7 +1368,7 @@ Human inspection is still required before demo.
 
 Manual QA should verify:
 
-* fish looks alive and locally appropriate
+* mermaid looks alive and locally appropriate
 * mouth animation feels acceptable
 * listening visualizer feels calm
 * portrait 9:16 layout works on the actual kiosk screen
@@ -1387,7 +1392,7 @@ The architecture is implemented correctly when:
 6. Holding Space starts microphone capture and listening state.  
 7. Releasing Space commits/stops input and enters thinking state.  
 8. AI voice response plays through browser speaker.  
-9. Fish enters speaking animation during audio response.  
+9. Mermaid enters speaking animation during audio response.
 10. Subtitles appear only if reliable transcript events are available.  
 11. Idle timeout clears context and returns UI to idle.  
 12. RTC remains warm across idle timeout if healthy.  
@@ -1431,7 +1436,7 @@ Do not implement these for MVP:
 * input classification service  
 * backend WebSocket audio proxy  
 * separate STT/TTS pipeline  
-* 3D fish rig  
+* 3D mermaid rig
 * camera interaction  
 * face recognition  
 * analytics dashboard  
