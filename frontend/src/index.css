@@ -1,0 +1,15 @@
+@import "tailwindcss";
+
+:root {
+  --river-deep: #0a1628;
+  --river-mid: #1a3a6e;
+  --river-light: #2a5f9e;
+  --glow-blue: #4a9fd4;
+  --mascot-glow: 0 0 20px rgba(74, 159, 212, 0.6);
+}
+
+body {
+  margin: 0;
+  overflow: hidden;
+  background: #0a1628;
+}
