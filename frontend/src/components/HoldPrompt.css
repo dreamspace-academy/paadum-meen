@@ -1,0 +1,37 @@
+.hold-prompt-pill {
+  display: inline-block;
+  padding: 12px 28px;
+  border-radius: 9999px;
+  background: rgba(10, 22, 40, 0.55);   /* semi-transparent river-deep */
+  color: #ffffff;
+  font-size: 20px;
+  font-weight: 500;
+  border: 2px solid rgba(74, 159, 212, 0.9);
+  animation: holdPromptPulse 2s ease-in-out infinite;
+}
+
+@keyframes holdPromptPulse {
+  0%, 100% {
+    border-color: rgba(74, 159, 212, 0.5);
+    box-shadow: 0 0 8px rgba(74, 159, 212, 0.3);
+    transform: scale(1);
+  }
+  50% {
+    border-color: rgba(74, 159, 212, 1);
+    box-shadow: 0 0 26px rgba(74, 159, 212, 0.75);
+    transform: scale(1.04);
+  }
+}
+
+.hold-prompt-key {
+  display: inline-block;
+  margin: 0 2px;
+  padding: 2px 10px;
+  border-radius: 6px;
+  background: rgba(74, 159, 212, 0.22);
+  border: 1px solid rgba(74, 159, 212, 0.85);
+  font-weight: 600;
+  font-size: 0.9em;
+  letter-spacing: 0.5px;
+  vertical-align: middle;
+}
