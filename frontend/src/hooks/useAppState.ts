@@ -15,7 +15,7 @@ export interface AppStateManager {
 const VALID_TRANSITIONS: Partial<Record<AppState, AppState[]>> = {
   [AppState.IDLE]: [AppState.LISTENING],
   [AppState.LISTENING]: [AppState.THINKING],
-  [AppState.THINKING]: [AppState.SPEAKING],
+  [AppState.THINKING]: [AppState.SPEAKING, AppState.RETURNING],
   [AppState.SPEAKING]: [AppState.RETURNING],
   [AppState.RETURNING]: [AppState.IDLE],
   [AppState.ERROR]: [AppState.IDLE],
@@ -26,6 +26,10 @@ export function useAppState(): AppStateManager {
 
   const transitionTo = useCallback((next: AppState) => {
     setState((current) => {
+      // Same-state transition is a no-op (avoids spurious warnings)
+      if (next === current) {
+        return current
+      }
       // ERROR is always reachable from any state
       if (next === AppState.ERROR) {
         return next

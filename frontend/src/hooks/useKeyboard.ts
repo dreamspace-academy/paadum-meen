@@ -27,6 +27,7 @@ export function useKeyboard(
 
   const handleKeyDown = useCallback((event: KeyboardEvent) => {
     if (event.code !== 'Space') return
+    event.preventDefault()
     // Guard against key-repeat events fired while key is held
     if (event.repeat) return
     if (isHoldingRef.current) return
@@ -38,6 +39,7 @@ export function useKeyboard(
 
   const handleKeyUp = useCallback((event: KeyboardEvent) => {
     if (event.code !== 'Space') return
+    event.preventDefault()
     // Stale key-release defense: ignore if we never started a hold
     if (!isHoldingRef.current) return
 

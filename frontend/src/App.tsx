@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react'
 
-import { AppState, IDLE_TIMEOUT_MS, UI_STRINGS } from './lib/constants'
+import { AppState, IDLE_TIMEOUT_MS, THINKING_TIMEOUT_MS, UI_STRINGS } from './lib/constants'
 import type { Language } from './lib/constants'
 import { useAppState } from './hooks/useAppState'
 import { useKeyboard } from './hooks/useKeyboard'
@@ -12,7 +12,7 @@ import Background from './components/Background'
 import Mascot from './components/Mascot'
 import AudioVisualizer from './components/AudioVisualizer'
 import SuggestedBubbles from './components/SuggestedBubbles'
-import Subtitles from './components/Subtitles'
+// import Subtitles from './components/Subtitles'
 import LanguageSelector from './components/LanguageSelector'
 import ResetButton from './components/ResetButton'
 import HoldPrompt from './components/HoldPrompt'
@@ -28,7 +28,6 @@ function App() {
   const {
     isConnecting,
     micStream,
-    aiTranscript,
     setMicEnabled,
     connect,
     disconnect,
@@ -91,6 +90,14 @@ function App() {
     }
   }, [state, reset, connect])
 
+  // 9. THINKING watchdog: if no response starts in time (e.g. the user held
+  // Space but said nothing), return to IDLE instead of hanging.
+  useEffect(() => {
+    if (state !== AppState.THINKING) return
+    const t = setTimeout(() => reset(), THINKING_TIMEOUT_MS)
+    return () => clearTimeout(t)
+  }, [state, reset])
+
   return (
     <div style={{ width: '100vw', height: '100vh', position: 'relative', overflow: 'hidden' }}>
       <Background />
@@ -124,11 +131,11 @@ function App() {
         getFrequencyData={getFrequencyData}
       />
 
-      {/* Subtitles — show during THINKING and SPEAKING */}
+      {/* Subtitles — show during THINKING and SPEAKING
       <Subtitles
         text={state === AppState.THINKING ? UI_STRINGS[lang].thinking : aiTranscript}
         visible={state === AppState.THINKING || state === AppState.SPEAKING}
-      />
+      /> */}
 
       {/* Error message */}
       {state === AppState.ERROR && (

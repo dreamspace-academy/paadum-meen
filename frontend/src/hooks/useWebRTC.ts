@@ -4,7 +4,12 @@ import {
   resetSession as apiResetSession,
 } from '../lib/api'
 
-const REALTIME_BASE_URL = 'https://api.openai.com/v1/realtime'
+const REALTIME_CALLS_URL = 'https://api.openai.com/v1/realtime/calls'
+
+const SILENCE_LEVEL_THRESHOLD = 0.01  // AI-audio level below this counts as silent
+const SILENCE_POLL_MS = 100          // AI-audio sampling interval
+const SILENCE_SUSTAIN_MS = 1_000     // sustained silence = playback finished
+const PLAYBACK_MAX_MS = 60_000       // safety cap on the detector
 
 type StateChangeEvent = 'speaking_started' | 'speaking_done' | 'error'
 
@@ -32,6 +37,15 @@ interface OaiEvent {
   transcript?: string
 }
 
+function maxRemoteAudioLevel(receiver: RTCRtpReceiver): number {
+  const sources = receiver.getSynchronizationSources()
+  let max = 0
+  for (const s of sources) {
+    if (typeof s.audioLevel === 'number' && s.audioLevel > max) max = s.audioLevel
+  }
+  return max
+}
+
 export function useWebRTC(
   onStateChange: (event: StateChangeEvent) => void,
 ): RealtimeSession {
@@ -47,11 +61,33 @@ export function useWebRTC(
   const dcRef = useRef<RTCDataChannel | null>(null)
   const micStreamRef = useRef<MediaStream | null>(null)
   const audioElRef = useRef<HTMLAudioElement | null>(null)
-  const aiTranscriptClearTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null)
+  const playbackPollRef = useRef<ReturnType<typeof setInterval> | null>(null)
+  const speakingFiredRef = useRef(false)
+  const isConnectingRef = useRef(false)
 
   // Keep onStateChange in a ref to avoid stale closures
   const onStateChangeRef = useRef(onStateChange)
   onStateChangeRef.current = onStateChange
+
+  const detectPlaybackEnd = useCallback(() => {
+    if (playbackPollRef.current !== null) clearInterval(playbackPollRef.current)
+    const receiver =
+      pcRef.current?.getReceivers().find((r) => r.track.kind === 'audio') ?? null
+    let silentFor = 0
+    let elapsed = 0
+    playbackPollRef.current = setInterval(() => {
+      elapsed += SILENCE_POLL_MS
+      const silent =
+        !receiver || maxRemoteAudioLevel(receiver) < SILENCE_LEVEL_THRESHOLD
+      silentFor = silent ? silentFor + SILENCE_POLL_MS : 0
+      if (silentFor >= SILENCE_SUSTAIN_MS || elapsed >= PLAYBACK_MAX_MS) {
+        if (playbackPollRef.current !== null) clearInterval(playbackPollRef.current)
+        playbackPollRef.current = null
+        speakingFiredRef.current = false
+        onStateChangeRef.current('speaking_done')
+      }
+    }, SILENCE_POLL_MS)
+  }, [])
 
   const handleDataChannelMessage = useCallback((event: MessageEvent) => {
     let parsed: OaiEvent
@@ -63,17 +99,18 @@ export function useWebRTC(
     }
 
     switch (parsed.type) {
-      case 'response.audio.delta':
-        onStateChangeRef.current('speaking_started')
-        break
-
-      case 'response.audio_transcript.delta':
+      case 'response.output_audio_transcript.delta':
+        if (!speakingFiredRef.current) {
+          speakingFiredRef.current = true
+          setAiTranscript('')
+          onStateChangeRef.current('speaking_started')
+        }
         if (parsed.delta !== undefined) {
           setAiTranscript((prev) => prev + parsed.delta)
         }
         break
 
-      case 'response.audio_transcript.done':
+      case 'response.output_audio_transcript.done':
         // Transcript is already accumulated; nothing extra needed
         break
 
@@ -88,17 +125,19 @@ export function useWebRTC(
       }
 
       case 'response.done':
-        onStateChangeRef.current('speaking_done')
-        // Clear aiTranscript after 3 seconds
-        if (aiTranscriptClearTimerRef.current !== null) {
-          clearTimeout(aiTranscriptClearTimerRef.current)
+        if (!speakingFiredRef.current) {
+          onStateChangeRef.current('speaking_done')
+        } else {
+          detectPlaybackEnd()
         }
-        aiTranscriptClearTimerRef.current = setTimeout(() => {
-          setAiTranscript('')
-        }, 3000)
         break
 
       case 'error': {
+        speakingFiredRef.current = false
+        if (playbackPollRef.current !== null) {
+          clearInterval(playbackPollRef.current)
+          playbackPollRef.current = null
+        }
         const msg = parsed.error?.message ?? 'Unknown error'
         setError(msg)
         onStateChangeRef.current('error')
@@ -108,13 +147,13 @@ export function useWebRTC(
       default:
         break
     }
-  }, [])
+  }, [detectPlaybackEnd])
 
   const disconnect = useCallback(() => {
-    // Clear any pending transcript clear timer
-    if (aiTranscriptClearTimerRef.current !== null) {
-      clearTimeout(aiTranscriptClearTimerRef.current)
-      aiTranscriptClearTimerRef.current = null
+    // Stop the playback-end detector
+    if (playbackPollRef.current !== null) {
+      clearInterval(playbackPollRef.current)
+      playbackPollRef.current = null
     }
 
     // Close data channel
@@ -145,11 +184,14 @@ export function useWebRTC(
     setIsConnecting(false)
     setAiTranscript('')
     setUserTranscript('')
+    isConnectingRef.current = false
+    speakingFiredRef.current = false
   }, [])
 
   const connect = useCallback(async () => {
     // Bail if already connected/connecting
-    if (isConnected || isConnecting) return
+    if (pcRef.current || isConnectingRef.current) return
+    isConnectingRef.current = true
 
     setIsConnecting(true)
     setError(null)
@@ -158,7 +200,6 @@ export function useWebRTC(
       // 1. Fetch ephemeral client secret from backend
       const session = await fetchRealtimeSession()
       const clientSecret = session.client_secret.value
-      const realtimeUrl = `${REALTIME_BASE_URL}?model=${session.model}`
 
       // 2. Get mic access
       const stream = await navigator.mediaDevices.getUserMedia({
@@ -185,8 +226,9 @@ export function useWebRTC(
       }
 
       pc.ontrack = (e) => {
-        if (audioElRef.current && e.streams[0]) {
-          audioElRef.current.srcObject = e.streams[0]
+        const stream = e.streams[0]
+        if (audioElRef.current && stream) {
+          audioElRef.current.srcObject = stream
           void audioElRef.current.play()
         }
       }
@@ -201,7 +243,7 @@ export function useWebRTC(
       await pc.setLocalDescription(offer)
 
       // 8. Exchange SDP with OpenAI Realtime API
-      const sdpResponse = await fetch(realtimeUrl, {
+      const sdpResponse = await fetch(REALTIME_CALLS_URL, {
         method: 'POST',
         headers: {
           Authorization: `Bearer ${clientSecret}`,
@@ -224,15 +266,17 @@ export function useWebRTC(
 
       setIsConnected(true)
       setIsConnecting(false)
+      isConnectingRef.current = false
     } catch (err) {
       const msg = err instanceof Error ? err.message : String(err)
       setError(msg)
       setIsConnecting(false)
+      isConnectingRef.current = false
       // Clean up any partial state
       disconnect()
       onStateChangeRef.current('error')
     }
-  }, [isConnected, isConnecting, disconnect, handleDataChannelMessage])
+  }, [disconnect, handleDataChannelMessage])
 
   const setMicEnabled = useCallback((enabled: boolean) => {
     if (!pcRef.current) return

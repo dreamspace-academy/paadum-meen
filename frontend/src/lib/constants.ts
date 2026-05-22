@@ -1,5 +1,7 @@
 export const IDLE_TIMEOUT_MS = 30_000
 
+export const THINKING_TIMEOUT_MS = 10_000
+
 export const AppState = {
   IDLE: 'IDLE',
   LISTENING: 'LISTENING',
