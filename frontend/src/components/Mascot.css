@@ -1,0 +1,52 @@
+.mascot {
+  position: relative;
+  width: 60%;
+  max-width: 340px;
+  margin: 0 auto;
+  user-select: none;
+}
+
+.mascot__layer {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: auto;
+  pointer-events: none;
+}
+
+.mascot__layer:first-child {
+  position: relative;
+}
+
+/* State animations */
+.mascot--idle      { animation: mascotFloat 3s ease-in-out infinite; }
+.mascot--listening { animation: mascotFloat 1.5s ease-in-out infinite; filter: drop-shadow(0 0 16px rgba(74,159,212,0.8)); }
+.mascot--thinking  { animation: mascotPulse 1.2s ease-in-out infinite; }
+.mascot--speaking  { animation: mascotSpeak 0.8s ease-in-out infinite; filter: drop-shadow(0 0 10px rgba(74,159,212,0.4)); }
+.mascot--returning { animation: mascotFloat 3s ease-in-out infinite; }
+.mascot--error     { filter: drop-shadow(0 0 16px rgba(220,38,38,0.7)); animation: mascotFloat 3s ease-in-out infinite; }
+
+@keyframes mascotFloat {
+  0%, 100% { transform: translateY(0px); }
+  50%       { transform: translateY(-12px); }
+}
+
+@keyframes mascotPulse {
+  0%, 100% { transform: scale(1); }
+  50%       { transform: scale(1.03); }
+}
+
+@keyframes mascotSpeak {
+  0%, 100% { transform: translateY(0px) rotate(-1deg); }
+  50%       { transform: translateY(-6px) rotate(1deg); }
+}
+
+.mascot--speaking .mascot__layer--eyes {
+  animation: mouthMove 0.4s ease-in-out infinite alternate;
+}
+
+@keyframes mouthMove {
+  from { transform: scaleY(1); }
+  to   { transform: scaleY(0.85); }
+}
