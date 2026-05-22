@@ -55,7 +55,7 @@ export const UI_STRINGS: Record<
     thinking: 'Thinking…',
   },
   ta: {
-    holdToTalk: 'பேச Space பிடி',
+    holdToTalk: 'AIயுடன் கதைக்க Space அழுத்திப் பிடியுங்கள் ',
     reset: 'மீண்டும்',
     errorMessage: 'ஏதோ தவறு நடந்தது. மீண்டும் முயற்சிக்கவும்.',
     thinking: 'யோசிக்கிறேன்…',
